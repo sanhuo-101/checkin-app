@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>swcheck</title></head>
+<body><pre id="o">running</pre>
+<script>
+(async function () {
+  var out = [];
+  function log(s) { out.push(s); document.getElementById('o').textContent = out.join('\n'); }
+  try {
+    log('SECURE=' + (window.isSecureContext ? 'yes' : 'no'));
+    var reg = await navigator.serviceWorker.register('sw.js', { scope: './' });
+    log('REGISTER_OK scope=' + reg.scope);
+    var activated = false;
+    for (var i = 0; i < 40; i++) {
+      var r = (await navigator.serviceWorker.getRegistrations())[0];
+      if (r && r.active && r.active.state === 'activated') { activated = true; break; }
+      await new Promise(function (res) { setTimeout(res, 250); });
+    }
+    log('SW_ACTIVATED=' + (activated ? 'yes' : 'no'));
+    var keys = await caches.keys();
+    log('CACHES=' + (keys.join(',') || 'none'));
+    if (keys.length) {
+      var c = await caches.open(keys[0]);
+      var ks = await c.keys();
+      log('CACHED_COUNT=' + ks.length);
+      log('CACHED=' + ks.map(function (k) { return new URL(k.url).pathname; }).join(' '));
+    }
+    log('CONTROLLER=' + (navigator.serviceWorker.controller ? 'yes' : 'no'));
+  } catch (e) {
+    log('ERROR ' + (e && e.message));
+  }
+  log('DONE');
+})();
+</script></body></html>
