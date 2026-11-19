@@ -3,6 +3,15 @@
 可以「安装」到手机桌面的网页应用：有独立图标、全屏无地址栏、离线可用，数据存本机。
 功能与单文件版 `../checkin.html` 完全一致。
 
+## 线上地址（已部署）
+
+**https://sanhuo-101.github.io/checkin-app/**
+
+仓库：https://github.com/sanhuo-101/checkin-app
+
+- 安卓 Chrome：打开 → `⋮` → **安装应用 / 添加到主屏幕**
+- iPhone Safari：打开 → **分享** → **添加到主屏幕**
+
 ## 目录
 
 ```
